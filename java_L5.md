@@ -65,6 +65,7 @@ public class SimpleArray {
 
 範例 5.2 使用配置的語法來宣告陣列，並使用 for 迴圈來設定每個元素的值然後顯示出來。
 #### **範例 5.2  ArrayDemo.java**
+
 ```java=
 public class ArrayDemo {
     public static void main(String[] args) {
