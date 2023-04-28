@@ -1,4 +1,4 @@
-# 第 8 章 繼承（Inheritance）、多型（Polymorphism）
+# 第 8 章 繼承（Inheritance）、多型（Polymorphism）[還沒看]
 ###### tags: `Java技術手冊6`
 
 在程式設計中，「繼承」（Inheritance）是一把雙面刃，用的好的話可讓整個程式架構具有相當的彈性，用不好的話整個程式會難以維護與修改。「多型」機制本身並不直覺，但使用適當的話可以動態調整物件的呼叫，並降低物件之間的依賴關係。在物件導向的世界中，除了識別出物件並定義類別之外，如何善用「繼承」與「多型」的機制來架構程式，往往都是整個==物件導向設計的重心==。
@@ -727,7 +727,9 @@ public class HollowCircle extends AbstractCircle {
 }
 ```
 
-由於==共同的定義==被==提取==至 `AbstractCircle` 類別中，並於擴充時繼承了下來，所以在 ConcreteCircle 與 HollowCircle 中不用重複定義，只要定義個別對 render() 的處理方式就行了，而由於 ConcreteCircle 與 HollowCircle 都是 AbstractCircle 的子類別，因而可以使用 AbstractCircle 上有定義的操作介面，來操作子類別實例上的方法，如範例 8.18 所示範的。
+由於==共同的定義==被==提取==至 `AbstractCircle` 類別中，並於擴充時繼承了下來，所以在 `ConcreteCircle` 
+與 `HollowCircle` 中不用重複定義，只要定義個別對 `render()` 的處理方式就行了，而由於 `ConcreteCircle` 
+與 `HollowCircle` 都是 `AbstractCircle` 的==子==類別，因而可以使用 AbstractCircle 上有定義的操作介面，來操作子類別實例上的方法，如範例 8.18 所示範的。
 
 #### **範例 8.18  CircleDemo.java**
 ```java=
@@ -748,11 +750,12 @@ public class CircleDemo {
     畫一個半徑 3.330000 的實心圓
     畫一個半徑 10.200000 的空心圓
 
-以上所舉的例子是 8.2.1 多型導論的具體例子，對 renderCircle() 方法來說，它只需依賴 AbstractCircle 類別，而不用個別為 ConcreteCircle 與 HollowCircle 類別撰寫個別的 renderCircle() 方法。
+以上所舉的例子是 8.2.1 ==多型導論==的具體例子，對 renderCircle() 方法來說，它只需依賴 AbstractCircle 類別，而不用個別為 ConcreteCircle 與 HollowCircle 類別撰寫個別的 renderCircle() 方法。
 
-> <font color="#D65014"> **良葛格的話匣子**</font> 將抽象類別的名稱加上 Abstract 作為開頭，可表明這是個抽象類別，用意在提醒開發人員不要使用這個類別來產生實例（事實上也無法產生實例）。
+> <font color="#D65014"> **良葛格的話匣子**</font> 將抽象類別的名稱加上 `Abstract` 作為開頭，可表明這是個抽象類別，
+> 用意在提醒開發人員不要使用這個類別來產生實例（事實上也無法產生實例）。
 > 
-> 在程式撰寫的過程中會像這邊所介紹的，將已有的程式加以「重構」（Refactor），讓物件職責與程式架構更有彈性，事實上這邊的例子就使用了重構中的「Pull up field」與「Pull up method」方法，重構手法是程式開發的經驗集成，如果您對這些經驗有興趣，建議您看看這本書：
+> 在程式撰寫的過程中會像這邊所介紹的，將已有的程式加以 ==「重構」（Refactor）==，讓物件職責與程式架構更有彈性，事實上這邊的例子就使用了重構中的「Pull up field」與「Pull up method」方法，重構手法是程式開發的經驗集成，如果您對這些經驗有興趣，建議您看看這本書：
 >
 >    Refactoring: Improving the Design of Existing Code
 >    by Martin Fowler, Kent Beck, John Brant, William Opdyke, don Roberts
@@ -792,7 +795,7 @@ public abstract class AbstractGuessGame {
 }
 ```
 
-這是個抽象類別，您在類別定義了 start() 方法，當中先實作比大小遊戲的基本規則，然而並不實作如何取得使用者輸入及訊息的顯示方式，只先定義了抽象方法 showMessage() 與  getUserInput()，使用 AbstractGuessGame 類別的辦法是擴充它，並實作當中的抽象方法，例如您可以實作一個簡單的文字介面遊戲類別，如範例 8.20 所示。
+這是個抽象類別，您在類別定義了 `start()` 方法，當中先實作比大小遊戲的基本規則，然而並不實作如何取得使用者輸入及訊息的顯示方式，只先定義了抽象方法 showMessage() 與  getUserInput()，使用 AbstractGuessGame 類別的辦法是擴充它，並實作當中的抽象方法，例如您可以實作一個簡單的文字介面遊戲類別，如範例 8.20 所示。
 
 #### **範例 8.20  TextModeGame.java**
 ```java=
@@ -852,7 +855,7 @@ public class GuessGameDemo {
 
 如果您想要實作一個有視窗介面的比大小遊戲，則您可以擴充 AbstractGuessGame 並在抽象方法 showMessage() 與 getUserInput() 中實作有視窗介面的訊息顯示；藉由在抽象類別中先定義好程式的執行流程，並將某些相依方法留待子類別中執行，這是抽象類別的應用場合之一。
 
- > <font color="#D65014"> **良葛格的話匣子**</font> 事實上這邊的例子是「Template Method 模式」的一個實例，Template Method 模式是Gof（Gang of Four）設計模式（Design Pattern）名書中23種模式中的一個，建議您在具備基本的物件導向觀念之後看看設計模式的相關書籍，可以增加您在物件導向程式設計上的功力，Gof 設計模式書是：
+ > <font color="#D65014"> **良葛格的話匣子**</font> 事實上這邊的例子是「Template Method 模式」的一個實例，==Template Method== 模式是 ==Gof（Gang of Four）設計模式==（Design Pattern）名書中23種模式中的一個，建議您在具備基本的物件導向觀念之後看看設計模式的相關書籍，可以增加您在物件導向程式設計上的功力，Gof 設計模式書是：
 >
 >    Design Patterns Elements of Reusable Object-Oriented Software by Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides
 >
@@ -862,9 +865,9 @@ public class GuessGameDemo {
 
 ### 8.2.4 介面（Interface）
 
-表面上看來，介面有點像是完全沒有任何方法被實作的抽象類別，但實際上兩者在語義與應用上是有差別的。「繼承某抽象類別的類別必定是該抽象類別的一個子類」，由於同屬一個類型，只要父類別中有定義同名方法，您就可以透過父類別型態來操作子類實例中被重新定義的方法，也就是透過父類別型態進行多型操作，但「實作某介面的類別並不被歸屬於哪一類」，一個物件上可以實作多個介面。
+表面上看來，介面有點像是==完全沒有任何方法被實作==的==抽象類別==，但實際上兩者在語義與應用上是有差別的。「繼承某抽象類別的==類別==必定是該抽象類別的一個==子類==」，由於同屬一個類型，只要==父類別==中有定義==同名方法==，您就可以==透過父類別==型態來操作==子==類實例中被==重新定義的方法==，也就是透過父類別型態進行多型操作，但「實作某介面的類別並不被歸屬於哪一類」，一個物件上可以實作==多個==介面。
 
-考慮您有一個方法 doRequest()，您事先並無法知道什麼型態的物件會被傳進來，或者是這個方法可以接受任何類型的物件，您想要操作物件上的某個特定方法，例如 doSomething() 方法，問題是傳進來的物件是任意的，除非您定義一個抽象類別並宣告 doSomething() 抽象方法，然後讓所有的類別都繼承這個抽象類別，否則的話您的 doRequest() 方法似乎無法實作出來，實際上這麼作也沒有價值。
+考慮您有一個方法 `doRequest()`，您==事先==並==無法知道==什麼型態的物件會被傳進來，或者是這個方法可以接受任何類型的物件，您想要操作物件上的某個特定方法，例如 `doSomething()` 方法，問題是傳進來的物件是任意的，除非您定義一個抽象類別並宣告 `doSomething()` 抽象方法，然後讓所有的類別都繼承這個抽象類別，否則的話您的 `doRequest()` 方法似乎無法實作出來，實際上這麼作也沒有價值。
 
 介面的目的在定義一組可操作的方法，實作某介面的類別必須實作該介面所定義的所有方法，只要物件有實作某個介面，就可以透過該介面來操作物件上對應的方法，無論該物件實際上屬於哪一個類別，像上面所述及的問題，就要靠要介面來解決。
 
@@ -876,7 +879,7 @@ public class GuessGameDemo {
         // .... 
     }
     
-在宣告介面時方法上的權限設定可以省略，如果省略的話，預設是 "public"，來看宣告介面的一個實例。
+在宣告介面時方法上的==權限設定可以省略==，如果省略的話，==預設是 "public"==，來看宣告介面的一個實例。
 
 #### **範例 8.22  IRequest.java**
 ```java=
@@ -941,7 +944,7 @@ public class RequestDemo {
 }
 ```
 
-在範例 8.25 中傳遞給 doRequest() 的物件是隨機的，雖然實際上傳入的物件並不知道到底是HelloRequest的實例，或者是 WelcomeRequest 的實例，但 doRequest() 知道傳入的物件都有實作 IRequest 介面上的方法，所以執行時就按照 IRequest 定義的方法來操作物件，執行結果如下：
+在範例 8.25 中傳遞給 `doRequest()` 的物件是隨機的，雖然實際上傳入的物件並不知道到底是HelloRequest的實例，或者是 WelcomeRequest 的實例，但 doRequest() 知道傳入的物件都有實作 IRequest 介面上的方法，所以執行時就按照 IRequest 定義的方法來操作物件，執行結果如下：
 
     哈囉 良葛格！
     哈囉 良葛格！
@@ -960,7 +963,7 @@ public class RequestDemo {
         // 介面實作
     }
     
-當您實作多個介面時，記得必須實作每一個介面中所定義的方法，由於實作了多個介面，所以要操作物件時，必要時必須作「介面轉換」，如此程式才知道如何正確的操作物件，假設 someObject 實作了 ISomeInterface1 與 ISomeInterface2 兩個介面，則您可以如下對物件進行介面轉換與操作：
+當您實作多個介面時，記得必須實作每一個介面中所定義的方法，由於實作了多個介面，所以要操作物件時，必要時必須作「==介面轉換==」，如此程式才知道如何正確的操作物件，假設 someObject 實作了 ISomeInterface1 與 ISomeInterface2 兩個介面，則您可以如下對物件進行介面轉換與操作：
 
     ISomeInterface1 obj1 = (ISomeInterface1) someObject;
     obj1.doSomeMethodOfISomeInterface1();
@@ -974,14 +977,14 @@ public class RequestDemo {
         // ... 
     }
     
-不同於類別一次只能繼承一個父類別，一個介面可以同時繼承多個父介面，實作子介面的類別必須將所有在父介面和子介面中定義的方法實作出來。
+不同於==類別== ==一次==只能繼承==一個父類別==，一個==介面==可以同時==繼承==多個==父介面==，實作==子介面==的類別==必須== ==將所有==在父介面和子介面中定義的==方法實作==出來。
 
  > <font color="#D65014"> **良葛格的話匣子**</font>
 在定義介面名稱時，可以使用 'I' 作為開頭，例如 IRequest 這樣的名稱，表明它是一個介面（Interface）。
 >
 > 事實上範例 8.25 是「Command 模式」的一個簡化實例，同樣的也可以參考 Gof 的設計模式書籍，我的網站上也有 Command 模式的介紹。
 
-> 在設計上鼓勵依賴關係儘量發生在介面上，雖然抽象類別也可以達到多型操作的目的，但依賴於抽象類別，表示您也依賴於某個類型（類別），而依賴於介面則不管物件實際上是哪個類型（類別）的實例，只要知道物件實作了哪個介面就可以了，比抽象類別的依賴多了一些彈性。
+> 在設計上鼓勵依賴關係儘量發生在介面上，雖然抽象類別也可以達到多型操作的目的，但==依賴於抽象類別==，表示您也依賴於某個==類型（類別）==，而依賴於介面則不管物件實際上是哪個類型（類別）的實例，只要知道物件實作了哪個介面就可以了，比抽象類別的依賴多了一些彈性。
 
 ## 8.3 接下來的主題-
 
