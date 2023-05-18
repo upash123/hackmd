@@ -282,11 +282,13 @@ getCopied() 方法原來返回的是Bird物件，現在打算擴充Bird類別，
 **注意！** 您無法重新定義 static 方法，一個方法要被重新定義，它必須是非 static 的，如果您在子類別中定義一個有同樣 **簽署（signature）** 的 static 成員，那不是重新定義，那是定義一個屬於該子類別的 static 成員。
 :::
 :::spoiler **簽署（signature）**
-是指方法或建構函式的唯一識別碼(Unique Identifier)，它由方法名稱和參數列表組成。簽署可以用來區分不同的方法或建構函式，即使它們具有相同的名稱。Java編譯器使用簽署來確定方法的重載，這意味著當您定義一個具有相同名稱但不同參數列表的方法時，Java編譯器將創建一個新的簽署來區分這些方法。簽署還可以用於反射[^註]，以便在運行時查找和調用方法。
+是指方法或建構函式的唯一識別碼(Unique Identifier)，它由方法名稱和參數列表組成。簽署可以用來區分不同的方法或建構函式，即使它們具有相同的名稱。Java編譯器使用簽署來確定方法的重載，這意味著當您定義一個具有相同名稱但不同參數列表的方法時，Java編譯器將創建一個新的簽署來區分這些方法。簽署還可以用於 ==反射[^註]==，以便在運行時查找和調用方法。
+
 以下面為例:
+
 `add`=是方法的名稱。
 `(int a, int b)`=是方法的參數列表。
-方法的==簽署==是`add(int, int)`:由方法名稱和參數列表組成。。
+方法的 ==簽署==是`add(int, int)`:由方法名稱和參數列表組成。。
 
 
 [^註]:[Reflection應用與實作](https://www.tpisoftware.com/tpu/articleDetails/2360)
@@ -311,7 +313,7 @@ public int add(int a, int b) {
         // 實作 
     } 
     
-由於 Object 類別是 Java 中所有類別的父類別，所以使用 Object 宣告的名稱，可以參考至任何的物件而不會發生任何錯誤，因為每一個物件都是 Object 的子物件，舉個簡單的例子，您可以製作一個簡單的集合（Collection）類別，並將一些自訂的類別之實例加入其中，範例 8.6 是個簡單示範。
+由於 Object 類別是 Java 中所有類別的父類別，所以使用 Object 宣告的名稱，可以參考至任何的物件而不會發生任何錯誤，因為==每一個物件都是 Object 的子物件==，舉個簡單的例子，您可以製作一個簡單的集合（Collection）類別，並將一些自訂的類別之實例加入其中，範例 8.6 是個簡單示範。
 
 #### **範例 8.6  SimpleCollection.java**
 ```java=
@@ -436,7 +438,7 @@ public class ToStringDemo {
     
  > <font color="#D65014"> **良葛格的話匣子**</font> ==「雜湊碼」==（Hash code）由雜湊函數計算得到，在資料結構上可用於資料的定址，Java 中的 `java.util.HashMap`（第 13 章會介紹）也是利用雜湊的原理來快速儲存與尋找物件，雖然在 Java 中您不用瞭解雜湊的原理，也可以直接使用像 `HashMap` 類別以得到使用雜湊的好處，但有機會的話，仍建議您看看資料結構中有關於雜湊的原理介紹。
 
-接著介紹 `equals()` 與 `hashCode()` 方法，Object 預設的 `equals()` 本身是比較物件的記憶體位址是否相同，您可以重新定義 `equals()` 方法，以定義您自己的物件在什麼條件下可視為相等的物件，然而在重新定義 `equals()` 方法時，建議同時重新定義 `hashCode()` 方法，因為在以雜湊（hash）為基礎的相關環境中，需要比較兩個物件是否為相同的物件時，除了使用 `equals()` 之外，還會依 `hashCode()` 方法來作判斷，例如加入 `java.util.HashSet` 容器（第 13 章中會介紹）中的物件就必須重新定義 `equals()` 與 `hashCode()` 方法，以作為加入 HashSet 中唯一物件的識別。
+接著介紹 `equals()` 與 `hashCode()` 方法，Object 預設的 `equals()` 本身是比較物件的記憶體位址是否相同，您可以重新定義 `equals()` 方法，以定義您自己的物件在什麼條件下可視為相等的物件，然而在重新定義 `equals()` 方法時，建議同時重新定義 `hashCode()` 方法，因為在以雜湊（hash）為基礎的相關環境中，需要比較兩個物件是否為相同的物件時，除了使用 `equals()` 之外，還會依 `hashCode()` 方法來作判斷，例如加入 `java.util.HashSet` 容器（第 13 章中會介紹）中的物件就必須重新定義 `equals()` 與 `hashCode()` 方法，以作為加入 ==HashSet 中唯一物件的識別==。
 
 來看看重新定義 `equals()` 與 `hashCode()` 方法的實際例子，您可以根據物件中真正包括的的資料成員來比較兩個物件是否相同，如範例 8.11 所示範的。
 
@@ -451,11 +453,19 @@ public class Cat {
     public Cat() {
     }
 
-    public void setName(String name) { this.name = name; }
-    public String getName() { return name; }
+    public void setName(String name) { 
+        this.name = name; 
+    }
+    public String getName() { 
+        return name; 
+    }
 
-    public void setBirthday(Date birthday) { this.birthday = birthday; }
-    public Date getBirthday() { return birthday; }
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+    public Date getBirthday() { 
+        return birthday; 
+    }
 
     public boolean equals(Object other) { 
         if (this == other) 
@@ -611,7 +621,7 @@ public class CloneDemo {
     
 ## 8.2 多型（Polymorphism）
 
-多型操作指的是使用==同一個==操作介面，以操作不同的物件實例，多型操作在物件導向上是為了降低對操作介面的依賴程度，進而增加程式架構的彈性與可維護性。多型操作是物件導向上一個重要的特性，這個小節會介紹多型的觀念，以及「抽象類別」（Abstract）與「介面」（Interface）應用的幾個實例。
+多型操作指的是使用==同一個==操作介面，以操作不同的物件實例，多型操作在物件導向上是為了==降低對操作介面的依賴程度==，進而增加程式架構的彈性與可維護性。多型操作是物件導向上一個重要的特性，這個小節會介紹多型的觀念，以及「抽象類別」（Abstract）與「介面」（Interface）應用的幾個實例。
 
 ### 8.2.1 多型導論
 
@@ -688,8 +698,12 @@ public class CloneDemo {
 public abstract class AbstractCircle {
     protected double radius;
 
-    public void setRadius(double radius) { this.radius = radius; }
-    public double getRadius() { return radius; }
+    public void setRadius(double radius) { 
+        this.radius = radius; 
+    }
+    public double getRadius() { 
+        return radius; 
+    }
 
     public abstract void render();
 }
