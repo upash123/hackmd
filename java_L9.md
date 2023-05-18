@@ -141,7 +141,7 @@ public class AnonymousClassDemo {
 
     匿名類別物件
 
-注意如果要在內部匿名類別中使用外部的區域變數，變數在宣告時必須為 "final"，例如下面的陳述是無法通過編譯的：
+注意如果要在==內部匿名類別==中使用==外部的區域變數==，變數在宣告時必須為 "final"，例如下面的陳述是無法通過編譯的：
 
     ....
         public void someMethod() {
@@ -235,7 +235,7 @@ public class Point2D {
 
     javac -d . Point2D.java
 
-在編譯過後，在 onlyfun 目錄的 caterpillar 目錄下會有 Point2D.class 檔案，而 "package" 所設定的名稱就成為類別名稱的一部份，也就是完整的類別名稱是 onlyfun.caterpillar.Point2D，除非您改變套件名稱並重新編譯類別，否則的話無法改變這個名稱，為了要使用 onlyfun.caterpillar.Point2D 類別，方法之一是使用「完全描述」（Fully qualified）名稱，也就是完整的指出「套件加類別」名稱，如範例 9.6 所示。
+在編譯過後，在 onlyfun 目錄的 caterpillar 目錄下會有 Point2D.class 檔案，而 "package" 所設定的名稱就成為類別名稱的一部份，也就是完整的類別名稱是 onlyfun.caterpillar.Point2D，除非您改變套件名稱並重新編譯類別，否則的話無法改變這個名稱，為了要使用 onlyfun.caterpillar.Point2D 類別，方法之一是使用「 ==完全描述==」（Fully qualified）名稱，也就是==完整==的指出「==套件加類別==」名稱，如範例 9.6 所示。
 
 #### **範例 9.6  Point2DDemo.java**
 ```java=
@@ -285,7 +285,7 @@ public class Point2DDemo2 {
 } 
 ```
 
-雖然在範例 9.7 中新建 onlyfun.caterpillar.Point2D 物件時，只指定了 Point2D 名稱，但編譯器從一開頭的 "import" 設定得知，完整的類別名稱應該是 onlyfun.caterpillar.Point2D，因而可以順利編譯，執行結果與範例 9.6 是相同的。
+雖然在範例 9.7 中新建 onlyfun.caterpillar.Point2D 物件時，只指定了 Point2D 名稱，但編譯器從一開頭的 =="import" 設定得知==，完整的類別名稱應該是 onlyfun.caterpillar.Point2D，因而可以順利編譯，執行結果與範例 9.6 是相同的。
 
 在使用 "import" 時可以指定類別的完整描述，如果您會使用到某個套件下的許多類別，在使用 "import" 指定時，可以於套件指定後加上 '\*'，這表示您會使用到該套件下的某些類別，編譯器會自己試著找出類別，例如範例 9.7 還可以再改為範例 9.8 的寫法。
 
@@ -313,7 +313,7 @@ public class Point2DDemo3 {
     
 這不是程式撰寫有誤，而是因為您 "import" 時使用了 '\*'，並且您的 Point2D.java 原始檔案也在同一個目錄，照之前編譯器尋找類別順序的說明，編譯器會先找到 Point2D.java，但發現當中有設定套件，而 Point2D.java 沒有在對應的目錄（onlyfun/caterpillar）下，所以編譯器認定這是個錯誤。
 
-將原始碼與編譯完成的類別檔放在一起容易發生這類的問題，事實上將原始碼與編譯完成的檔案放在一起並不是一個好的管理方式，您可以建一個專門放原始碼 .java 檔案的目錄 src，並建一個專門放 .class 檔案的目錄 classes，編譯時這麼下指令：
+將原始碼與編譯完成的類別檔放在一起容易發生這類的問題，事實上將==原始碼==與==編譯==完成的==檔案==放在一起並==不是==一個好的管理方式，您可以建一個專門放原始碼 .java 檔案的目錄 src，並建一個專門放 .class 檔案的目錄 classes，編譯時這麼下指令：
 
     javac -d ./classes ./src/*.java
 
@@ -342,7 +342,7 @@ public class Point2DDemo3 {
     
 這個時候您就要考慮換一下類別名稱了（如果您有權更動那些類別的話），或者是不使用 "import"，直接使用完整描述；在 "import" 時儘量不因為貪圖方便而使用 '\*'，也可以減少這種情況的發生。
 
-> **良葛格的話匣子** 使用 "import" 就是在告知編譯器您的類別位於哪一個套件下，而編譯器尋找類別最先是根據 Classpath 的設定，所以您也要瞭解 Classpath 的設定，建議您也看看官方網站上的 Classpath 設定文章，您對套件的瞭解會更深入：
+> <font color="#D65014"> **良葛格的話匣子**</font> 使用 "import" 就是在告知編譯器您的類別位於哪一個套件下，而編譯器尋找類別最先是根據 Classpath 的設定，所以您也要瞭解 Classpath 的設定，建議您也看看官方網站上的 Classpath 設定文章，您對套件的瞭解會更深入：
 > 
 > - [Setting the class path (Windows)](http://java.sun.com/javase/6/docs/technotes/tools/windows/classpath.html)
 > - [Setting the class path (Solaris and Linux)](http://java.sun.com/javase/6/docs/technotes/tools/solaris/classpath.html)
@@ -351,18 +351,18 @@ public class Point2DDemo3 {
 
 ### 9.2.3 public 與套件
 
-一個類別在定義時可以使用 "public" 加以修飾，一個 .java 檔案中可以定義數個類別，但只能有一個被宣告為 "public"，沒有被宣告為 "public" 的類別只能被同一個套件中的類別之實例呼叫使用，例如將範例 9.5 中 onlyfun.caterpillar.Point2D 類別上的 "public" 拿掉並重新編譯，接著再編譯 Point2DDemo.java 檔案時，會出現以下的錯誤，因為 Point2DDemo（預設套件）與 onlyfun.caterpillar.Point2D 不在同一個套件：
+一個類別在定義時可以使用 "public" 加以修飾，一個 .java 檔案中可以定義數個類別，但 ==只能有**一個**== 被宣告為 "public"，沒有被宣告為 "public" 的類別只能被同一個套件中的類別之實例呼叫使用，例如將範例 9.5 中 onlyfun.caterpillar.Point2D 類別上的 "public" 拿掉並重新編譯，接著再編譯 Point2DDemo.java 檔案時，會出現以下的錯誤，因為 Point2DDemo（預設套件）與 onlyfun.caterpillar.Point2D 不在同一個套件：
 
     Point2DDemo.java:3: onlyfun.caterpillar.Point2D is not public in onlyfun.caterpillar;     cannot be accessed from outside package
             onlyfun.caterpillar.Point2D p1 = new
 
-類別成員也可以宣告為 "public"，宣告為 "public" 的類別成員可以被其它物件呼叫使用，如果宣告類別時不使用 "public"、"protected" 或 "private" 設定權限，則預設為「套件存取範圍」，只有同一個套件中的類別可以呼叫這些類別成員，例如範例 9.5 中將 getX()、getY() 上的 "public" 拿掉並重新編譯，接著再編譯 Point2DDemo.java 時，會出現以下的錯誤，因為 Point2DDemo（預設套件）與 onlyfun.caterpillar.Point2D 不在同一個套件：
+類別成員也可以宣告為 "public"，宣告為 "public" 的類別成員可以被其它物件呼叫使用，如果宣告類別時不使用 "public"、"protected" 或 "private" 設定權限，則==預設==為「==套件存取範圍==」，只有同一個套件中的類別可以呼叫這些類別成員，例如範例 9.5 中將 getX()、getY() 上的 "public" 拿掉並重新編譯，接著再編譯 Point2DDemo.java 時，會出現以下的錯誤，因為 Point2DDemo（預設套件）與 onlyfun.caterpillar.Point2D 不在同一個套件：
 
     Point2DDemo.java:7: getX() is not public in onlyfun.caterpillar.Point2D; cannot be     accessed from outside package
                p1.getX(), p1.getY());
                   ^
 
-類別上的權限設定會約束類別成員上的權限設定，所以如果類別上不宣告 "public"，而類別成員上設定了 "public"，則類別成員同樣的也只能被同一個套件的類別存取，也就是說如果您這麼撰寫程式：
+==類別==上的==權限設定==會==約束==類別==成員==上的==權限設定==，所以如果類別上不宣告 "public"，而類別成員上設定了 "public"，則類別成員同樣的也只能被同一個套件的類別存取，也就是說如果您這麼撰寫程式：
 
     package onlyfun.caterpillar;
     class SomeClass {
@@ -382,7 +382,7 @@ public class Point2DDemo3 {
         }
     }
 
-由這邊的討論，可以再來看看預設建構方法的權限。首先要知道的是，當您在 Java 中定義一個類別，但沒有定義建構方法時，編譯器會自動幫您產生一個預設建構方法，也就是說，如果您這麼寫：
+由這邊的討論，可以再來看看預設建構方法的權限。首先要知道的是，當您在 Java 中定義一個類別，但沒有定義建構方法時，編譯器會自動幫您產生一個==預設建構==方法，也就是說，如果您這麼寫：
 
     package onlyfun.caterpillar;
     public class Test {
@@ -412,7 +412,7 @@ public class Point2DDemo3 {
 
     Test test = new Test();
 
-有時會建議即使沒有用到，在定義自己的建構方法的同時，也加上個沒有參數的建構方法，例如：
+有時會建議即使==沒有用到==，在定義自己的建構方法的同時，也加上個==沒有參數的建構方法==，例如：
 
     package onlyfun.caterpillar;
     public class Test {
@@ -425,9 +425,9 @@ public class Point2DDemo3 {
         ....
     }
 
-要注意的是，在繼承時，如果您沒有使用 super() 指定要使用父類別的哪個建構方法，則預設會尋找父類別中無參數的建構方法。
+要注意的是，在==繼承==時，如果您沒有使用 ==super()== 指定要使用父類別的哪個建構方法，則==預設==會尋找父類別中==無參數的建構方法==。
 
-預設建構方法的存取權限是跟隨著類別的存取權限而設定，例如：
+預設建構方法的==存取權限==是跟隨著==類別==的存取權限而設定，例如：
 
     package onlyfun.caterpillar;
     public class Test {
