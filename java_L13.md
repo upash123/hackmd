@@ -1,25 +1,25 @@
 # 第 13 章 物件容器（Container）
 
-在程式運行的過程中，很多時候您需要將物件暫時儲存在一個容器中統一管理，之後需要時再將物件取出，要使用什麼樣的容器依設計需求而定，您可以使用循序有索引的串列（List）結構來儲存物件，或是使用不允許重複相同物件的集合（Set）結構，您也可以使用「鍵-值」（Key-Value）存取的Map。
+在程式運行的過程中，很多時候您需要將物件暫時儲存在一個容器中統一管理，之後需要時再將物件取出，要使用什麼樣的容器依設計需求而定，您可以使用循序有索引的==串列（List）結構==來儲存物件，或是使用不允許重複相同物件的==集合（Set）結構==，您也可以使用「鍵-值」（Key-Value）存取的Map。
 
-儲存結構與資料結構的設計是息息相關的，使用 Java SE 的話，即使您實際上不瞭解 List、Set、Map 資料結構的設計方式，也可以直接取用實作 java.util.List、java.util.Set、java.util.Map 介面的相關類別，以得到使用相同資料結構的功能，在 J2SE 5.0 中，這些容器類別更使用了「泛型」（Generics）功能重新改寫，如此您就不用擔心物件儲存至容器就失去其型態資訊的問題。
+==儲存結構==與==資料結構==的設計是息息相關的，使用 Java SE 的話，即使您實際上不瞭解 List、Set、Map 資料結構的設計方式，也可以直接取用實作 java.util.List、java.util.Set、java.util.Map 介面的相關類別，以得到使用相同資料結構的功能，在 J2SE 5.0 中，這些容器類別更使用了「泛型」（Generics）功能重新改寫，如此您就不用擔心物件儲存至容器就失去其型態資訊的問題。
 
 ------------------
 
 ## 13.1 Collection 類
 
-Collection 結構可持有各自獨立的物件，在 Java SE 中, Collection 包括了 List 與 Set，List 是實作 java.util.List 介面的相關類別，可依物件被放置至容器中的順序來排列物件，Set 是實作 java.util.Set 介面的相關類別，不接受重複的物件，並可擁有自己的一套排序規則。
+Collection 結構可持有==各自獨立的物件==，在 Java SE 中, Collection 包括了 List 與 Set，List 是實作 java.util.List 介面的相關類別，可依物件被放置至容器中的順序來排列物件，Set 是實作 java.util.Set 介面的相關類別，不接受重複的物件，並可擁有自己的一套排序規則。
 
 ### 13.1.1 簡介 List 介面
 
 java.util.ArrayList 類別實作了 java.util.List 介面，所以要先認識一下 List 介面，List 介面是 java.util.Collection 介面的子介面，而 Collection 介面則是 java.lang.Iterable 的子介面，Iterable 介面要求實作一個 iterator() 方法。
-
+```java=
     package java.lang;
     import java.util.Iterator;
     public interface Iterable<T> {
         Iterator<T> iterator();
     }
-    
+```   
 從 J2SE 5.0 開始增加了泛型設計的新功能，所以像 Iterable、Collection 相關介面與其實作類別，都使用泛型的功能重新改寫了，因而您可以在原始碼或是 API 文件中看到增加了不少與泛型相關的功能或說明。
 
 Iterable 介面要求實作它的類別傳回一個實作 java.util.Iterator 介面的物件，事實上您在 Java SE 的 API 中找不到任何實作 Iterator 的類別，因為 Iterator 會根據實際的容器資料結構來迭代元素，而容器的資料結構實作方式對外界是隱藏的，使用者不用知道這個結構，只需要知道 Iterator 的操作方法，就可以取出元素，Iterator 介面的定義如下：
@@ -31,7 +31,7 @@ Iterable 介面要求實作它的類別傳回一個實作 java.util.Iterator 介
         void remove();
     }
     
-><font color="#D65014"> **良葛格的話匣子** </font> Iterator 是「Iterator 模式」的一個實例，有關 Iterator 模式，請參考我網站上的文件：
+><font color="#D65014"> **良葛格的話匣子** </font> Iterator 是「Iterator 模式」的一個==實例==，有關 Iterator 模式，請參考我網站上的文件：
 > 
 > - https://openhome.cc/Gossip/DesignPattern/
 
@@ -56,7 +56,7 @@ Collection 介面繼承了 Iterator 介面，定義了加入元素、移除元�
     }
     
 Collection 在移除元素及取得元素上的定義是比較通用，List 介面則又增加了根據索引取得物件的方法，這說明了 List 資料結構的特性，每個加入 List 中的元素是循序加入的，並可指定索引來存取元素（以下原始碼只是節錄部份）。
-
+```java=
     package java.util;
     public interface List<E> extends Collection<E> {
         ....
@@ -70,7 +70,7 @@ Collection 在移除元素及取得元素上的定義是比較通用，List 介�
         List<E> subList(int fromIndex, int toIndex);
         ....
     }
-    
+```    
 List 資料結構的特性是，每個加入 List 中的元素是循序加入的，並可指定索引來存取元素，List 可以使用陣列（Array）或是鏈結串列（Linked List）來實作這個特性，前者在 Java SE 中的實作就是 java.util.ArrayList，後者就是 java.util.LinkedList，對於循序加入與存取，使用 ArrayList 的效率比較好，對於經常變動元素排列順序的需求，使用 LinkedList 會比較好。
 
 > <font color="#D65014"> **良葛格的話匣子** </font> 以上的原始碼是從 JDK 安裝目錄下的 src.zip 中找出來的，記得如果您有需要參考 Java SE 中的 API 實作方式的話，都可以在 src.zip 中找到原始碼來參考。
