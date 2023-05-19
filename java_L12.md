@@ -358,7 +358,7 @@ HashMap 並沒有實作 List 介面，所以無法作為實例化型態持有者
     foo = new GenericFoo<ArrayList>(); 
     foo = new GenericFoo<LinkedList>();
     
-簡單的說，您想要有一個 foo 名稱可以參考的對象，其型態持有者實例化的對象是實作 List 介面的類別或其子類別，要宣告這麼一個參考名稱，您可以使用 `?`「通配字元」（Wildcard），`?` 代表未知型態，並使用 `extends` 關鍵字來作限定，例如：
+簡單的說，您想要有一個 foo 名稱可以參考的對象，其型態持有者實例化的對象是實作 List 介面的類別或其子類別，要宣告這麼一個參考名稱，您可以使用 ==`?`「通配字元」（Wildcard），`?` 代表未知型態==，並使用 `extends` 關鍵字來作限定，例如：
 ```java=
     GenericFoo<? extends List> foo = null;
     foo = new GenericFoo<ArrayList>();
@@ -390,8 +390,8 @@ HashMap 並沒有實作 List 介面，所以無法作為實例化型態持有者
         System.out.println(foo.getFoo());
     }
     
-這麼一來，如果有粗心的程式設計人員傳入了您不想要的型態，例如 `GenericFoo<Boolean>` 型態的實例，則編譯器都會告訴它這是不可行的，在宣告名稱時如果指定了 `<?>` 而不使用 "extends"，則預設是允許 Object 及其下的子類，也就是所有的 Java 物件了，那為什麼不直接使用 `GenericFoo` 宣告就好了，何必要用 `GenericFoo<?>` 來宣告？使用通配字元有點要注意的是，透過使用通配字元宣告的名稱所參考的物件，您沒辦法再對它加入新的資訊，您只能取得它當中的資訊或是移除當中的資訊，例如：
-
+這麼一來，如果有粗心的程式設計人員傳入了您不想要的型態，例如 `GenericFoo<Boolean>` 型態的實例，則編譯器都會告訴它這是不可行的，在宣告名稱時如果指定了 `<?>` 而不使用 "extends"，則預設是允許 Object 及其下的子類，也就是所有的 Java 物件了，那為什麼不直接使用 `GenericFoo` 宣告就好了，何必要用 `GenericFoo<?>` 來宣告？使用通配字元有點要==注意==的是，透過使用通配字元宣告的名稱所參考的物件，您==沒辦法再對它加入新的資訊==，您只能取得它當中的資訊或是移除當中的資訊，例如：
+```java=
     GenericFoo<String> foo = new GenericFoo<String>();
     foo.setFoo("caterpillar");
     
@@ -405,14 +405,14 @@ HashMap 並沒有實作 List 介面，所以無法作為實例化型態持有者
     // 不可透過immutableFoo來設定新的資訊給foo所參考的實例
     // 所以下面這行無法通過編譯
     //  immutableFoo.setFoo("良葛格");
-
+```
 所以使用 `<?>` 或是 `<? extends SomeClass>` 的宣告方式，意味著您只能透過該名稱來取得所參考實例的資訊，或者是移除某些資訊，但不能增加它的資訊，理由很簡單，因為您不知道 `<?>` 或是 `<? extends SomeClass>` 宣告的參考名稱，實際上參考的物件，當中確實儲存的是什麼類型的資訊，基於泛型的設計理念，當然也就沒有理由能加入新的資訊了，因為若能加入，被加入的物件同樣也會有失去型態資訊的問題。
 
-除了可以向下限制，您也可以向上限制，只要使用 "super" 關鍵字，例如：
+除了可以==向下限制==，您也可以==向上限制==，只要使用 =="super"== 關鍵字，例如：
 
     GenericFoo<? super StringBuilder> foo = null;
 
-如此， foo 就只接受 StringBuilder 及其上層的父類型態，也就是只能接受 `GenericFoo<StringBuilder>` 與 `GenericFoo<Object>` 的實例。
+如此， foo 就只接受 StringBuilder ==及其上層的父類型態==，也就是只能接受 `GenericFoo<StringBuilder>` 與 `GenericFoo<Object>` 的實例。
 
 ### 12.2.3 擴充泛型類別、實作泛型介面 
 
@@ -464,7 +464,7 @@ public class SubGenericFoo4<T1, T2, T3>
 介面實作也是類似，例如先如範例 12.12 定義一個介面。
 
 #### **範例 12.12  IFoo.java**
-```java
+```java=
 public interface IFoo<T1, T2> {
     public void setFoo1(T1 foo1);
     public void setFoo2(T2 foo2);
@@ -476,7 +476,7 @@ public interface IFoo<T1, T2> {
 您可以如範例 12.13 的方式實作 IFoo 介面，實作時保留所有的型態持有者。
 
 #### **範例 12.13  ConcreteFoo.java**
-```java
+```java=
 public class ConcreteFoo<T1, T2> implements IFoo<T1, T2> {
     private T1 foo1;
     private T2 foo2;
