@@ -481,12 +481,15 @@ public class LinkedHashSetDemo {
     
 ### 13.1.5 TreeSet
 
-TreeSet 實作 Set 介面與 java.util.SortedSet 介面，SortedSet 提供相關的方法讓您==有序==的取出對應位置的物件，像是 first()、last() 等方法，TreeSet 是 Java SE 中==唯一==實作 ==SortedSet== 介面的類別，它使用==紅黑樹結構==來對加入的物件進行排序。
+TreeSet 實作 Set 介面與 java.util.SortedSet 介面，SortedSet 提供相關的方法讓您==有序==的取出對應位置的物件，像是 first()、last() 等方法，TreeSet 是 Java SE 中==唯一==實作 ==SortedSet== 介面的類別，它使用==紅黑樹結構==[^註]來對加入的物件進行排序。
+
+[^註]: 紅黑樹 https://clu.gitbook.io/data-structure-note/1.4.3-red-black-tree,
+紅黑樹2 https://www.readfog.com/a/1631643683692580864
 
 來看看使用 TreeSet 的一個簡單例子。
 
 #### **範例 13.11  TreeSetDemo.java**
-```java
+```java=
 package onlyfun.caterpillar;
  
 import java.util.*;
@@ -508,7 +511,7 @@ public class TreeSetDemo {
 }
 ```
 
-由於您加入的是 String 物件，執行結果會自動依字典順序進行排列的動作，如下所示：
+由於您加入的是 String 物件，執行結果會自動依==字典順序==進行排列的動作，如下所示：
 
     caterpillar justin momor
 
@@ -531,10 +534,10 @@ public class CustomComparator<T> implements Comparator<T> {
 }
 ```
 
-在自訂的 Comparator 中，如果兩個物件的順序相同會傳回 0，而為了方便比較物件，範例 13.12 中要求傳入的物件必須實作 Comparable 介面（例如 String 物件就有實作 Comparable 介面），範例中只是簡單的將原來 compareTo() 傳回的值乘以負一，如此在 TreeSet 中就可以簡單的讓排列順序相反，可以重新改寫一下範例 13.11，在建構 TreeSet 實例時一併指定自訂的 Comparator，如範例 13.13 所示。
+在自訂的 Comparator 中，如果兩個物件的==順序相同==會傳回 ==0==，而為了方便比較物件，範例 13.12 中要求傳入的物件必須實作 Comparable 介面（例如 String 物件就有實作 Comparable 介面），範例中只是簡單的將原來 compareTo() 傳回的值乘以負一，如此在 TreeSet 中就可以簡單的讓排列順序相反，可以重新改寫一下範例 13.11，在建構 TreeSet 實例時一併指定自訂的 Comparator，如範例 13.13 所示。
 
 #### **範例 13.13  TreeSetDemo2.java**
-```java
+```java=
 package onlyfun.caterpillar;
  
 import java.util.*;
@@ -569,13 +572,15 @@ public class TreeSetDemo2 {
 java.util.EnumSet 是在 J2SE 5.0 後加入的新類別，可以協助您建立列舉值的集合，EnumSet 提供了一系列的靜態方法，可以讓您指定不同的集合建立方式，直接使用範例 13.14 作個簡單示範。
 
 #### **範例 13.14  EnumSetDemo.java**
-```java
+```java=
 package onlyfun.caterpillar;
  
 import java.util.*;
 
 // 定義列舉型態
-enum FontConstant { Plain, Bold, Italic }
+enum FontConstant { 
+    Plain, Bold, Italic
+    }
  
 public class EnumSetDemo {
     public static void main(String[] args) {
@@ -599,22 +604,22 @@ public class EnumSetDemo {
 }
 ```
 
-如範例 13.14 所示範的，您可以指定列舉值來加入 EnumSet 中，使用 of() 方法會返回一個 EnumSet 的實例，當中包括您所指定的列舉值，您也可以使用 complementOf() 指定一個 EnumSet 的互補集，以下是執行的結果：
+如範例 13.14 所示範的，您可以指定列舉值來加入 EnumSet 中，使用 ==of()== 方法會返回一個 EnumSet 的實例，當中包括您所指定的列舉值，您也可以使用 complementOf() 指定一個 EnumSet 的互補集，以下是執行的結果：
 
     Plain
     Bold
     Italic
     
 EnumSet 實作了 Set 介面，所以您可以使用 Set 介面的所有方法來測試它所包括的列舉值，例如測試一個集合中是否包括 FontConstant.Bold：
-
+```java=
     if(enumSet.contains(FontConstant.Bold)) {
          System.out.println("包括FontConstant.Bold");
     }
-    
+```    
 您也可以建立一個空的 EnumSet 實例，然後再逐個加入列舉值，例如範例 13.15 所示範的。
 
 #### **範例 13.15  EnumSetDemo2.java**
-```java
+```java=
 package onlyfun.caterpillar;
  
 import java.util.*;
@@ -652,7 +657,7 @@ public class EnumSetDemo2 {
 
 ## 13.2 Map 類
 
-實作 java.util.Map 介面的物件會將「鍵」（Key）映射至「值」（Value），「值」指的是您要存入 Map 容器的物件。在將物件存入 Map 物件時，需要同時給定一個「鍵」，要取回物件時可以指定鍵，如此就可以取得與鍵對應的物件「值」，Map 中的每一個鍵都是唯一的，不能有重複的鍵，Map擁有自己的排序機制。
+實作 java.util.Map 介面的物件會將「鍵」（Key）映射至「值」（Value），「值」指的是您要存入 Map 容器的物件。在將物件存入 Map 物件時，需要同時給定一個「鍵」，要取回物件時可以指定鍵，如此就可以取得與鍵對應的物件「值」，Map 中的每一個鍵都是唯一的，==不能有重複的鍵==，Map擁有自己的排序機制。
 
 ### 13.2.1 HashMap
 
@@ -661,7 +666,7 @@ Map 的特性即「鍵-值」（Key-Value）匹配，簡單的說，您可以將
 java.util.HashMap 實作了 Map 介面，HashMap 在內部實作使用雜湊（Hash），讓您在很快的時間內可以尋得「鍵-值」（Key-Value）匹配，直接使用一個簡單的例子來說明。
 
 #### **範例 13.16  HashMapDemo.java**
-```java
+```java=
 package onlyfun.caterpillar;
  
 import java.util.*;
@@ -682,7 +687,7 @@ public class HashMapDemo {
 }
 ```
 
-在範例中宣告 Map 型態與新增 Map 實例時，您指定了「鍵-值」所要使用的型態，在範例中都是宣告為 String 型態，也就是您要以 String 物件作為「鍵」，而存入的「值」也會是 String 物件，使用 Map 的 put() 方法將物件存入時，必須同時指定「鍵」、「值」，而要取回物件時，則使用 get() 方法並指定「鍵」，傳回的會是對應於鍵的「值」，程式的執行結果如下：
+在範例中宣告 Map 型態與新增 Map 實例時，您指定了「鍵-值」所要使用的型態，在範例中都是宣告為 String 型態，也就是您要以 String 物件作為「鍵」，而存入的「值」也會是 String 物件，使用 Map 的 put() 方法將物件存入時，必須同時指定「鍵」、「值」，而要取回物件時，則使用 ==get()== 方法並指定 ==「鍵」== ，==傳回==的會是==對應==於鍵的 ==「值」==，程式的執行結果如下：
 
     caterpillar 的訊息
     justin 的訊息
@@ -690,7 +695,7 @@ public class HashMapDemo {
 可以使用 values() 方法返回一個實作 Collection 的物件，當中包括所有的「值」物件，如果您需要一次迭代 Map 中所有的物件，這會很有用，範例 13.17 是個簡單示範。
 
 #### **範例 13.17  HashMapDemo2.java**
-```java
+```java=
 package onlyfun.caterpillar;
  
 import java.util.*;
@@ -732,7 +737,7 @@ public class HashMapDemo2 {
 如果您想要在迭代所有的物件時，依照插入的順序來排列，則可以使用 java.util.LinkedHashMap，它是 HashMap 的子類，在使用 values() 所返回的 Collection 物件，其內含物件之順序即為當初您加入物件之順序，範例 13.18 是個簡單的示範。
 
 #### **範例 13.18  LinkedHashMapDemo.java**
-```java
+```java=
 package onlyfun.caterpillar;
 
 import java.util.*;
@@ -767,7 +772,7 @@ public class LinkedHashMapDemo {
 
 ### 13.2.2 TreeMap
 
-java.util.TreeMap 實作 Map 介面與 java.util.SortedMap 介面，SortedMap 提供相關的方法讓您有序的取出對應位置的物件，像是 firstKey()、lastKey() 等方法，TreeMap 是 Java SE 中唯一實作 SortedMap 介面的類別，它使用紅黑樹結構來對加入的物件進行排序。
+java.util.TreeMap 實作 Map 介面與 java.util.SortedMap 介面，SortedMap 提供相關的方法讓您==有序==的取出對應位置的物件，像是 firstKey()、lastKey() 等方法，==TreeMap== 是 Java SE 中唯一實作 SortedMap 介面的類別，它使用紅黑樹結構來對加入的物件進行排序。
 
 來看看使用 TreeMap 的一個簡單例子。
 
