@@ -1,5 +1,5 @@
 # 第 13 章 物件容器（Container）
-
+###### tags: `Java技術手冊6`
 在程式運行的過程中，很多時候您需要將物件暫時儲存在一個容器中統一管理，之後需要時再將物件取出，要使用什麼樣的容器依設計需求而定，您可以使用循序有索引的==串列（List）結構==來儲存物件，或是使用不允許重複相同物件的==集合（Set）結構==，您也可以使用「鍵-值」（Key-Value）存取的Map。
 
 ==儲存結構==與==資料結構==的設計是息息相關的，使用 Java SE 的話，即使您實際上不瞭解 List、Set、Map 資料結構的設計方式，也可以直接取用實作 java.util.List、java.util.Set、java.util.Map 介面的相關類別，以得到使用相同資料結構的功能，在 J2SE 5.0 中，這些容器類別更使用了「泛型」（Generics）功能重新改寫，如此您就不用擔心物件儲存至容器就失去其型態資訊的問題。
@@ -23,20 +23,20 @@ java.util.ArrayList 類別實作了 java.util.List 介面，所以要先認識�
 從 J2SE 5.0 開始增加了泛型設計的新功能，所以像 Iterable、Collection 相關介面與其實作類別，都使用泛型的功能重新改寫了，因而您可以在原始碼或是 API 文件中看到增加了不少與泛型相關的功能或說明。
 
 Iterable 介面要求實作它的類別傳回一個實作 java.util.Iterator 介面的物件，事實上您在 Java SE 的 API 中找不到任何實作 Iterator 的類別，因為 Iterator 會根據實際的容器資料結構來迭代元素，而容器的資料結構實作方式對外界是隱藏的，使用者不用知道這個結構，只需要知道 Iterator 的操作方法，就可以取出元素，Iterator 介面的定義如下：
-
+```java=
     package java.util;
     public interface Iterator<E> {
         boolean hasNext();
         E next();
         void remove();
     }
-    
+```  
 ><font color="#D65014"> **良葛格的話匣子** </font> Iterator 是「Iterator 模式」的一個==實例==，有關 Iterator 模式，請參考我網站上的文件：
 > 
 > - https://openhome.cc/Gossip/DesignPattern/
 
 Collection 介面繼承了 Iterator 介面，定義了加入元素、移除元素、元素長度等方法，
-
+```java=
     package java.util;
     public interface Collection<E> extends Iterable<E> {
         int size();
@@ -54,8 +54,8 @@ Collection 介面繼承了 Iterator 介面，定義了加入元素、移除元�
         boolean equals(Object o);
         int hashCode();
     }
-    
-Collection 在移除元素及取得元素上的定義是比較通用，List 介面則又增加了根據索引取得物件的方法，這說明了 List 資料結構的特性，每個加入 List 中的元素是循序加入的，並可指定索引來存取元素（以下原始碼只是節錄部份）。
+```    
+Collection 在移除元素及取得元素上的定義是比較通用，List 介面則又增加了根據索引取得物件的方法，這說明了 List 資料結構的特性，每個加入 List 中的元素是==循序==加入的，並可指定索引來存取元素（以下原始碼只是節錄部份）。
 ```java=
     package java.util;
     public interface List<E> extends Collection<E> {
@@ -71,18 +71,18 @@ Collection 在移除元素及取得元素上的定義是比較通用，List 介�
         ....
     }
 ```    
-List 資料結構的特性是，每個加入 List 中的元素是循序加入的，並可指定索引來存取元素，List 可以使用陣列（Array）或是鏈結串列（Linked List）來實作這個特性，前者在 Java SE 中的實作就是 java.util.ArrayList，後者就是 java.util.LinkedList，對於循序加入與存取，使用 ArrayList 的效率比較好，對於經常變動元素排列順序的需求，使用 LinkedList 會比較好。
+List 資料結構的特性是，每個加入 List 中的元素是循序加入的，並可指定索引來存取元素，List 可以使用 ==陣列（Array）== 或是 ==鏈結串列（Linked List）== 來==實作== 這個特性，前者在 Java SE 中的實作就是 java.util.ArrayList，後者就是 java.util.LinkedList，對於==循序加入==與存取，使用 ==ArrayList== 的效率比較好，對於==經常變動元素排列順序==的需求，使用 ==LinkedList== 會比較好。
 
 > <font color="#D65014"> **良葛格的話匣子** </font> 以上的原始碼是從 JDK 安裝目錄下的 src.zip 中找出來的，記得如果您有需要參考 Java SE 中的 API 實作方式的話，都可以在 src.zip 中找到原始碼來參考。
 
 ### 13.1.2 ArrayList
 
-ArrayList 實作了 List 介面，ArrayList 使用陣列結構實作 List 資料結構，陣列的特性是可以使用索引來快速指定物件的位置，所以對於快速的隨機取得物件來說，使用 ArrayList 可以得到較好的效能，但由於使用陣列實作，若要從中間作移除或插入物件的動作，會需要搬動後段的陣列元素以重新調整索引順序，所以速度上就會慢的多。
+ArrayList 實作了 List 介面，ArrayList 使用==陣列結構==實作 List ==資料結構==，陣列的特性是可以使用索引來快速指定物件的位置，所以對於快速的隨機取得物件來說，使用 ArrayList 可以得到較好的效能，但由於使用陣列實作，若要從中間作移除或插入物件的動作，會需要搬動後段的陣列元素以重新調整索引順序，所以速度上就會慢的多。
 
 先來看看一個使用 ArrayList 的例子，如範例 13.1 所示。
 
 #### **範例 13.1  ArrayListDemo.java**
-```java
+```java=
 package onlyfun.caterpillar;
 
 import java.util.*;
@@ -111,9 +111,9 @@ public class ArrayListDemo {
 }
 ```
 
-在 J2SE 5.0 之後新增了泛型（Generic）的功能，使用物件容器時可以宣告將儲存的物件型態，如此您的物件在存入容器會被限定為您所宣告的型態，編譯器在編譯時期會協助您進行型態檢查，而取出物件時也不至於失去原來的型態資訊，這可以避免型態轉換時的問題。
+在 J2SE 5.0 之後新增了==泛型（Generic）== 的功能，使用物件容器時可以==宣告==將儲存的物件型態，如此您的物件在存入容器會被==限==定為您==所宣告的型態==，編譯器在編譯時期會協助您進行型態檢查，而取出物件時也不至於失去原來的型態資訊，這可以避免型態轉換時的問題。
 
-使用 add() 方法可以將一個物件加入 ArrayList中，使用 size() 方法可以傳回目前的 ArrayList 的長度，使用 get() 可以傳回指定索引處的物件，使用 toArray() 可以將 ArrayList 中的物件轉換為物件陣列，執行結果如下：
+使用 add() 方法可以將一個物件加入 ArrayList中，使用 ==size()== 方法可以傳回目前的 ArrayList 的==長度==，使用 ==get()== 可以==傳回==指定索引處的==物件==，使用 toArray() 可以將 ArrayList 中的物件轉換為物件陣列，執行結果如下：
 
     輸入名稱(使用quit結束)
     # 良葛格
@@ -132,7 +132,7 @@ public class ArrayListDemo {
 >
 > 從這個章節開始，我會為每個範例加上套件管理，如果有不熟悉套件管理的部份，建議複習一下9.2的內容。
 
-您可以使用 get() 方法指定索引值取出物件，然而如果您的目的是要循序取出容器中所有的物件，則您可以使用 Iterator，Iterator 類為實作「Iterator 模式」的一個例子（見本章後網路索引），來使用 Iterator 的功能改寫一下範例 13.1 為範例 13.2。
+您可以使用 ==get()== 方法==指定索引值==取出物件，然而如果您的目的是要==循序取出==容器中所有的物件，則您可以使用 ==Iterator==，Iterator 類為實作「Iterator 模式」的一個例子（見本章後網路索引），來使用 Iterator 的功能改寫一下範例 13.1 為範例 13.2。
 
 #### **範例 13.2  IteratorDemo.java**
 ```java
@@ -168,12 +168,12 @@ public class IteratorDemo {
 }
 ```
 
-iterator() 方法會傳回一個 Iterator 物件，這個物件提供遍訪容器元素的方法，hasNext() 方法測試 Iterator 中是否還有物件，如果有的話，可以使用 next() 方法取出，您不用理會 Iterator 是如何實作的，事實上您在 Java SE 的 API 中也找不到實作 Iterator 的類別，在 ArrayList 的例子中，Iterator 的實例是在 ArrayList 中根據陣列的結構而實作的，但您不用理會實作細節，只要知道如何根據 Iterator 介面來操作就可以了，執行結果與範例 13.1 是相同的。
+iterator() 方法會傳回一個 Iterator 物件，這個物件提供==遍訪==容器元素的方法，hasNext() 方法==測試== Iterator 中==是否還有物件==，如果==有==的話，可以使用 ==next()== 方法取出，您不用理會 Iterator 是如何實作的，事實上您在 Java SE 的 API 中也找不到實作 Iterator 的類別，在 ArrayList 的例子中，Iterator 的實例是在 ArrayList 中根據陣列的結構而實作的，但您不用理會實作細節，只要知道如何根據 Iterator 介面來操作就可以了，執行結果與範例 13.1 是相同的。
 
-事實上在 J2SE 5.0 中，您不必使用 iterator() 方法返回 Iterator 實例並操作它來取得元素，您可以使用「增強的 for 迴圈」（Enhanced for loop）來直接遍訪 List 的所有元素，範例 13.3 改寫範例 13.1 作了示範。
+事實上在 J2SE 5.0 中，您不必使用 iterator() 方法返回 Iterator 實例並操作它來取得元素，您可以使用「 ==增強的 for 迴圈」（Enhanced for loop）== 來直接遍訪 List 的所有元素，範例 13.3 改寫範例 13.1 作了示範。
 
 #### **範例 13.3  EnhancedForDemo.java**
-```java
+```java=
 package onlyfun.caterpillar;
  
 import java.util.*;
@@ -204,18 +204,18 @@ public class EnhancedForDemo {
 }
 ```
 
-執行結果與範例 13.1 的執行結果是相同的。您可以再嘗試使用一些 ArrayList 上的方法，像是 indexOf() 相關方法，如果有不明白的方法，記得查詢線上 API 文件。
+執行結果與範例 13.1 的執行結果是相同的。您可以再嘗試使用一些 ArrayList 上的方法，像是 ==indexOf()== 相關方法，如果有不明白的方法，記得查詢線上 API 文件。
 
 ### 13.1.3 LinkedList
 
-List 預設是以物件加入（add）容器的順序來排列它們， List 上的 add() 也可以指定位置插入物件，如果您的物件加入之後大都是為了取出，而不會常作移除或插入（Insert）的動作，則使用 ArrayList 效能上會比較好，如果您會經常從容器中作移除或插入物件的動作，則使用 java.util.LinkedList 會獲得較好的效能。
+List 預設是以物件加入（add）容器的順序來排列它們， List 上的 add() 也可以==指定位置==插入物件，如果您的物件加入之後大都是為了取出，而不會常作移除或插入（Insert）的動作，則使用 ArrayList 效能上會比較好，如果您會經常從容器中作移除或插入物件的動作，則使用 java.util.LinkedList 會獲得較好的效能。
 
-LinkedList 使用鏈結串列（Linked list）實作了 List 介面，在介紹 ArrayList 時，您大致已瞭解如何操作實作 List 介面的物件，這邊介紹 LinkedList 上增加的一些移除與插入物件的特定方法，像是 addFirst()、addLast()、getFirst()、getLast()、removeFirst( )、removeLast() 等，由於使用 LinkedList 使用鏈結串列，在進行插入與移除動作時有較好的效能，適合拿來實作堆疊（Stack）與佇列（Queue）。
+LinkedList 使用鏈結串列（Linked list）實作了 List 介面，在介紹 ArrayList 時，您大致已瞭解如何操作實作 List 介面的物件，這邊介紹 LinkedList 上增加的一些移除與插入物件的特定方法，像是 ==addFirst()==、==addLast()==、==getFirst()==、==getLast()==、==removeFirst( )==、==removeLast()== 等，由於使用 LinkedList 使用鏈結串列，在進行插入與移除動作時有較好的效能，適合拿來實作堆疊（Stack）與佇列（Queue）。
 
-範例 13.4 使用 LinkedList 實作一個簡單的先進後出（First-In, Last-Out）的堆疊類別，這個類別可以存入字串。
+範例 13.4 使用 LinkedList 實作一個簡單的==先進後出（First-In, Last-Out）== 的堆疊類別，這個類別可以存入字串。
 
 #### **範例 13.4  StringStack.java**
-```java
+```java=
 package onlyfun.caterpillar;
  
 import java.util.*;
@@ -252,7 +252,7 @@ public class StringStack {
 由於 addFirst()、addLast()、getFirst()、getLast()、removeFirst( )、removeLast() 等方法是 LinkedList 類別本身定義的方法，無法透過 List 介面來操作，所以您要使用 LinkedList 型態的參考名稱來操作實例，範例 13.5 示範如何使用範例 13.4 這個簡單的堆疊類別。
 
 #### **範例 13.5  StringStackDemo.java**
-```java
+```java=
 package onlyfun.caterpillar;
 
 import java.util.Scanner;
@@ -293,7 +293,7 @@ public class StringStackDemo {
 對於先進先出（First-In, First-Out）的佇列，您也可以使用 LinkedList 來實作，範例 13.6 實作一個簡單的 StringQueue 類別。
 
 #### **範例 13.6  StringQueue.java**
-```java
+```java=
 package onlyfun.caterpillar;
  
 import java.util.*;
@@ -323,7 +323,7 @@ public class StringQueue {
 來撰寫範例 13.7 示範一下如何使用範例 13.6 的 StringQueue 類別。
 
 #### **範例 13.7  StringQueueDemo.java**
-```java
+```java=
 package onlyfun.caterpillar;
 
 import java.util.Scanner;
@@ -365,7 +365,7 @@ public class StringQueueDemo {
 事實上，如果您要使用佇列的功能，您也不用親自實作，在 J2SE 5.0 中，LinkedList 也實作了 java.util.Queue 介面，所以您可以直接操作 LinkedList 的實例進行佇列操作，範例 13.8 是個簡單的示範。
 
 #### **範例 13.8  QueueDemo.java**
-```java
+```java=
 package onlyfun.caterpillar;
 
 import java.util.*;
@@ -398,22 +398,22 @@ public class QueueDemo {
 } 
 ```
 
-範例 13.8 的執行結果與範例 13.7 是相同的。Queue 有五個必須實作的方法，範例中示範了 offer() 與 poll() 的操作，另外還有：element() 可取得但不移除佇列第一個元件，佇列為空時會丟出例外；peek() 可取得但不移除佇列第一個元件，佇列為空時傳回 null；remove() 取得並移除佇列第一個元件。
+範例 13.8 的執行結果與範例 13.7 是相同的。Queue 有五個==必須實作==的方法，範例中示範了 ==offer()== 與 ==poll()== 的操作，另外還有：==element()== 可==取得==但==不移除佇列第一個元件==，佇列為空時會丟出例外；==peek()== 可==取得但不移除==佇列第一個元件，佇列為==空==時傳回 ==null==ㄈ；==remove()== ==取得並移除==佇列第一個元件。
 
 ### 13.1.4 HashSet
 
-java.util.HashSet 實作了 java.util.Set 介面，Set 介面一樣繼承了 Collection 介面，List 容器中的物件允許重複，但 Set 容器中的物件都是唯一的，Set 容器有自己的一套排序規則。
+java.util.HashSet 實作了 java.util.Set 介面，Set 介面一樣繼承了 Collection 介面，List 容器中的物件允許重複，但 ==Set== 容器中的物件都是==唯一==的，Set 容器有自己的一套排序規則。
 
 HashSet 的排序規則是利用湊雜（Hash），所以加入 HashSet 容器的物件還必須重新定義 hashCode() 方法，HashSet 根據湊雜碼來確定物件於容器中儲存的位置，也可以根據雜湊碼來快速的找到容器中的物件。
 
-在比較兩個加入 HashSet 容器中的物件是否相同時，會先比較 hashCode() 方法傳回的值是否相同，如果相同，則再使用 equals() 方法比較，如果兩者都相同，則視為相同的物件。
+在比較兩個加入 HashSet 容器中的物件是否相同時，會==先==比較 hashCode() 方法傳回的==值==是否相同，如果相同，則==再==使用 ==equals()== 方法比較，如果兩者都相同，則視為相同的物件。
 
 事實上在定義類別時，最好總是重新定義 equals() 與 hashCode() 方法，以符合 Java 的設計規範，您可以參考 8.1.5 的介紹瞭解如何重新定義 equals() 與 hashCode() 方法。
 
 來看看如何使用 HashSet，範例 13.9 是個簡單的示範。
 
 #### **範例 13.9  HashSetDemo.java**
-```java
+```java=
 package onlyfun.caterpillar;
  
 import java.util.*;
@@ -445,7 +445,7 @@ public class HashSetDemo {
 }
 ```
 
-在範例 13.9 中可以看到，即使重複加入了 "caterpillar" 字串，HashSet 中仍只有一個 "caterpillar" 字串物件，這是 Set 的特性，另一個要注意的是，迭代 HashSet 中所有的值時，其順序與您加入容器的順序是不一樣的，迭代所有值時的順序是 HashSet 排序過後的順序，執行結果如下：
+在範例 13.9 中可以看到，即使重複加入了 "caterpillar" 字串，HashSet 中仍只有一個 "caterpillar" 字串物件，這是 Set 的特性，另一個要注意的是，迭代 HashSet 中所有的值時，其順序與您加入容器的==順序是不一樣==的，迭代所有值時的順序是 HashSet 排序過後的順序，執行結果如下：
 
     bush momor caterpillar
     momor caterpillar
@@ -481,7 +481,7 @@ public class LinkedHashSetDemo {
     
 ### 13.1.5 TreeSet
 
-TreeSet 實作 Set 介面與 java.util.SortedSet 介面，SortedSet 提供相關的方法讓您有序的取出對應位置的物件，像是 first()、last() 等方法，TreeSet 是 Java SE 中唯一實作 SortedSet 介面的類別，它使用紅黑樹結構來對加入的物件進行排序。
+TreeSet 實作 Set 介面與 java.util.SortedSet 介面，SortedSet 提供相關的方法讓您==有序==的取出對應位置的物件，像是 first()、last() 等方法，TreeSet 是 Java SE 中==唯一==實作 ==SortedSet== 介面的類別，它使用==紅黑樹結構==來對加入的物件進行排序。
 
 來看看使用 TreeSet 的一個簡單例子。
 
